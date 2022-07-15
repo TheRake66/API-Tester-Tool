@@ -85,6 +85,8 @@ namespace API_Tester_Tool
             try
             {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(this.textBoxURL.Text);
+                httpWebRequest.Proxy = WebRequest.DefaultWebProxy;
+                httpWebRequest.Credentials = CredentialCache.DefaultCredentials;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
 
                 if (this.radioButtonGET.Checked) httpWebRequest.Method = "GET";

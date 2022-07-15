@@ -385,7 +385,7 @@ namespace API_Tester_Tool
             this.MinimumSize = new System.Drawing.Size(1205, 780);
             this.Name = "Form1";
             this.Padding = new System.Windows.Forms.Padding(32);
-            this.Text = "(1.1.0.0) API Tester Tool — Testing JSON to JSON API — by Thibault BUSTOS (TheRak" +
+            this.Text = "(1.1.1.0) API Tester Tool — Testing JSON to JSON API — by Thibault BUSTOS (TheRak" +
     "e66)";
             this.ResumeLayout(false);
             this.PerformLayout();
