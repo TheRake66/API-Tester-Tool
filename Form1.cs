@@ -61,59 +61,66 @@ namespace API_Tester_Tool
             this.buttonClearContent.Enabled = false;
 
 
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(this.textBoxURL.Text);
-            httpWebRequest.ContentType = "application/json; charset=utf-8";
-
-            if (this.radioButtonGET.Checked) httpWebRequest.Method = "GET";
-            else if (this.radioButtonPOST.Checked) httpWebRequest.Method = "POST";
-            else if (this.radioButtonPUT.Checked) httpWebRequest.Method = "PUT";
-            else if (this.radioButtonPATCH.Checked) httpWebRequest.Method = "PATCH";
-            else if (this.radioButtonDELETE.Checked) httpWebRequest.Method = "DELETE";
-
-            if (!this.radioButtonGET.Checked)
-            {
-                using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    streamWriter.Write(this.richTextBoxBody.Text);
-                }
-            }
-
-            HttpWebResponse httpResponse;
             try
             {
-                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            }
-            catch (WebException ex)
-            {
-                httpResponse = ex.Response as HttpWebResponse;
-            }
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(this.textBoxURL.Text);
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
 
-            string code = Convert.ToString((int)httpResponse.StatusCode);
-            char rank = code.ToCharArray()[0];
-            this.buttonCode.Text = code + " — " + httpResponse.StatusCode;
-            switch (rank)
-            {
-                case '1':
-                    this.buttonCode.BackColor = this.blue;
-                    break;
-                case '2':
-                    this.buttonCode.BackColor = this.green;
-                    break;
-                case '3':
-                    this.buttonCode.BackColor = this.yellow;
-                    break;
-                case '4':
-                    this.buttonCode.BackColor = this.red;
-                    break;
-                case '5':
-                    this.buttonCode.BackColor = this.purple;
-                    break;
-            }
+                if (this.radioButtonGET.Checked) httpWebRequest.Method = "GET";
+                else if (this.radioButtonPOST.Checked) httpWebRequest.Method = "POST";
+                else if (this.radioButtonPUT.Checked) httpWebRequest.Method = "PUT";
+                else if (this.radioButtonPATCH.Checked) httpWebRequest.Method = "PATCH";
+                else if (this.radioButtonDELETE.Checked) httpWebRequest.Method = "DELETE";
 
-            using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                if (!this.radioButtonGET.Checked)
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        streamWriter.Write(this.richTextBoxBody.Text);
+                    }
+                }
+
+                HttpWebResponse httpResponse;
+                try
+                {
+                    httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    httpResponse = ex.Response as HttpWebResponse;
+                }
+
+                string code = Convert.ToString((int)httpResponse.StatusCode);
+                char rank = code.ToCharArray()[0];
+                this.buttonCode.Text = code + " — " + httpResponse.StatusCode;
+                switch (rank)
+                {
+                    case '1':
+                        this.buttonCode.BackColor = this.blue;
+                        break;
+                    case '2':
+                        this.buttonCode.BackColor = this.green;
+                        break;
+                    case '3':
+                        this.buttonCode.BackColor = this.yellow;
+                        break;
+                    case '4':
+                        this.buttonCode.BackColor = this.red;
+                        break;
+                    case '5':
+                        this.buttonCode.BackColor = this.purple;
+                        break;
+                }
+
+                using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+                    this.richTextBoxContent.Text = result;
+                }
+            }
+            catch (Exception ex)
             {
-                string result = streamReader.ReadToEnd();
-                this.richTextBoxContent.Text = result;
+                MessageBox.Show("An error occurred !\r\nMessage : \"" + ex.Message + "\"", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
 
