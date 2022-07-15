@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -52,6 +53,26 @@ namespace API_Tester_Tool
             {
                 MessageBox.Show("Please, enter an URL address !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+            else if (this.richTextBoxBody.Text != "")
+            {
+                if (this.radioButtonGET.Checked)
+                {
+                    MessageBox.Show("You cannot send query body with GET method !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                else
+                {
+                    try
+                    {
+                        JsonConvert.DeserializeObject(this.richTextBoxBody.Text);
+                    }
+                    catch
+                    {
+                        this.invalidBody();
+                        return;
+                    }
+                }
             }
 
 
@@ -138,6 +159,70 @@ namespace API_Tester_Tool
         private void checkBoxWarpContent_CheckedChanged(object sender, EventArgs e)
         {
             this.richTextBoxContent.WordWrap = this.checkBoxWrapContent.Checked;
+        }
+
+        private void checkBoxIndentBody_CheckedChanged(object sender, EventArgs e)
+        {
+            this.indentBody();
+        }
+
+        private void checkBoxIndentContent_CheckedChanged(object sender, EventArgs e)
+        {
+            this.indentContent();
+        }
+
+        private void richTextBoxBody_Validating(object sender, CancelEventArgs e)
+        {
+            this.indentBody();
+        }
+
+        private void richTextBoxContent_TextChanged(object sender, EventArgs e)
+        {
+            this.indentContent();
+        }
+
+        private void indentBody()
+        {
+            if (this.richTextBoxBody.Text != "")
+            {
+                try
+                {
+                    this.richTextBoxBody.Text = JsonConvert.SerializeObject(
+                        JsonConvert.DeserializeObject(this.richTextBoxBody.Text),
+                        this.checkBoxIndentBody.Checked ? Formatting.Indented : Formatting.None);
+                }
+                catch
+                {
+                    this.invalidBody();
+                }
+            }
+        }
+
+        private void indentContent()
+        {
+            if (this.richTextBoxContent.Text != "")
+            {
+                try
+                {
+                    this.richTextBoxContent.Text = JsonConvert.SerializeObject(
+                        JsonConvert.DeserializeObject(this.richTextBoxContent.Text),
+                        this.checkBoxIndentContent.Checked ? Formatting.Indented : Formatting.None);
+                }
+                catch 
+                {
+                    this.invalidContent();
+                }
+            }
+        }
+
+        private void invalidBody()
+        {
+            MessageBox.Show("The query body is not valid !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void invalidContent()
+        {
+            MessageBox.Show("The response content is not valid !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

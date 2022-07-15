@@ -50,6 +50,8 @@ namespace API_Tester_Tool
             this.buttonCopy = new System.Windows.Forms.Button();
             this.checkBoxWrapContent = new System.Windows.Forms.CheckBox();
             this.checkBoxWrapBody = new System.Windows.Forms.CheckBox();
+            this.checkBoxIndentBody = new System.Windows.Forms.CheckBox();
+            this.checkBoxIndentContent = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -160,6 +162,7 @@ namespace API_Tester_Tool
             this.richTextBoxBody.TabIndex = 8;
             this.richTextBoxBody.Text = "";
             this.richTextBoxBody.WordWrap = false;
+            this.richTextBoxBody.Validating += new System.ComponentModel.CancelEventHandler(this.richTextBoxBody_Validating);
             // 
             // label3
             // 
@@ -214,6 +217,7 @@ namespace API_Tester_Tool
             this.richTextBoxContent.TabIndex = 12;
             this.richTextBoxContent.Text = "";
             this.richTextBoxContent.WordWrap = false;
+            this.richTextBoxContent.TextChanged += new System.EventHandler(this.richTextBoxContent_TextChanged);
             // 
             // label6
             // 
@@ -292,7 +296,7 @@ namespace API_Tester_Tool
             this.checkBoxWrapContent.AutoSize = true;
             this.checkBoxWrapContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxWrapContent.Location = new System.Drawing.Point(657, 598);
-            this.checkBoxWrapContent.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
+            this.checkBoxWrapContent.Margin = new System.Windows.Forms.Padding(0, 0, 12, 32);
             this.checkBoxWrapContent.Name = "checkBoxWrapContent";
             this.checkBoxWrapContent.Size = new System.Drawing.Size(163, 29);
             this.checkBoxWrapContent.TabIndex = 19;
@@ -306,7 +310,7 @@ namespace API_Tester_Tool
             this.checkBoxWrapBody.AutoSize = true;
             this.checkBoxWrapBody.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxWrapBody.Location = new System.Drawing.Point(32, 598);
-            this.checkBoxWrapBody.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
+            this.checkBoxWrapBody.Margin = new System.Windows.Forms.Padding(0, 0, 12, 32);
             this.checkBoxWrapBody.Name = "checkBoxWrapBody";
             this.checkBoxWrapBody.Size = new System.Drawing.Size(163, 29);
             this.checkBoxWrapBody.TabIndex = 20;
@@ -314,12 +318,46 @@ namespace API_Tester_Tool
             this.checkBoxWrapBody.UseVisualStyleBackColor = true;
             this.checkBoxWrapBody.CheckedChanged += new System.EventHandler(this.checkBoxWrapBody_CheckedChanged);
             // 
+            // checkBoxIndentBody
+            // 
+            this.checkBoxIndentBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxIndentBody.AutoSize = true;
+            this.checkBoxIndentBody.Checked = true;
+            this.checkBoxIndentBody.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxIndentBody.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxIndentBody.Location = new System.Drawing.Point(207, 598);
+            this.checkBoxIndentBody.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
+            this.checkBoxIndentBody.Name = "checkBoxIndentBody";
+            this.checkBoxIndentBody.Size = new System.Drawing.Size(127, 29);
+            this.checkBoxIndentBody.TabIndex = 21;
+            this.checkBoxIndentBody.Text = "Auto indent";
+            this.checkBoxIndentBody.UseVisualStyleBackColor = true;
+            this.checkBoxIndentBody.CheckedChanged += new System.EventHandler(this.checkBoxIndentBody_CheckedChanged);
+            // 
+            // checkBoxIndentContent
+            // 
+            this.checkBoxIndentContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxIndentContent.AutoSize = true;
+            this.checkBoxIndentContent.Checked = true;
+            this.checkBoxIndentContent.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxIndentContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxIndentContent.Location = new System.Drawing.Point(832, 598);
+            this.checkBoxIndentContent.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
+            this.checkBoxIndentContent.Name = "checkBoxIndentContent";
+            this.checkBoxIndentContent.Size = new System.Drawing.Size(127, 29);
+            this.checkBoxIndentContent.TabIndex = 22;
+            this.checkBoxIndentContent.Text = "Auto indent";
+            this.checkBoxIndentContent.UseVisualStyleBackColor = true;
+            this.checkBoxIndentContent.CheckedChanged += new System.EventHandler(this.checkBoxIndentContent_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(1189, 741);
+            this.Controls.Add(this.checkBoxIndentContent);
+            this.Controls.Add(this.checkBoxIndentBody);
             this.Controls.Add(this.checkBoxWrapBody);
             this.Controls.Add(this.checkBoxWrapContent);
             this.Controls.Add(this.buttonClearContent);
@@ -347,7 +385,7 @@ namespace API_Tester_Tool
             this.MinimumSize = new System.Drawing.Size(1205, 780);
             this.Name = "Form1";
             this.Padding = new System.Windows.Forms.Padding(32);
-            this.Text = "(1.0.0.0) API Tester Tool — Testing JSON to JSON API — by Thibault BUSTOS (TheRak" +
+            this.Text = "(1.1.0.0) API Tester Tool — Testing JSON to JSON API — by Thibault BUSTOS (TheRak" +
     "e66)";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -376,6 +414,8 @@ namespace API_Tester_Tool
         private System.Windows.Forms.Button buttonCopy;
         private System.Windows.Forms.CheckBox checkBoxWrapContent;
         private System.Windows.Forms.CheckBox checkBoxWrapBody;
+        private System.Windows.Forms.CheckBox checkBoxIndentBody;
+        private System.Windows.Forms.CheckBox checkBoxIndentContent;
     }
 }
 
