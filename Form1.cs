@@ -44,7 +44,10 @@ namespace API_Tester_Tool
 
         private void buttonCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(this.richTextBoxContent.Text);
+            if (this.richTextBoxContent.Text != "")
+            {
+                Clipboard.SetText(this.richTextBoxContent.Text);
+            }
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
